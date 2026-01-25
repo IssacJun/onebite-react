@@ -1,17 +1,37 @@
 import './App.css'
 import Viewer from './components/Viewer'
 import Controller from './components/Controller'
-import { useState, useEffect } from 'react' 
+import Even from './components/Even'
+import { useState, useEffect, useRef } from 'react' 
 
 function App() {
   const [ count, setCount ] = useState(0);
   const [ input, setInput ] = useState("");
-  // useEffect
-  // 2번째 인수의 배열에 있는 요소(의존성 배열, deps)가 변경될 경우, 
-  // 1번째 인수의 콜백함수가 실행됨
+
+  const isMount = useRef(false); 
+  // useRef는 값이 바뀌어도 컴포넌트를 다시 렌더링 시키지 않음
+  // 리렌더링이 되어도 값이 안 바뀜
+  
+  // 1. Mount
+  // 이 컴포넌트가 mount될 때 한 번 만 수행됨
   useEffect(() => {
-    console.log(`count: ${count} / input: ${input}`);
-  }, [ count, input ]);
+    console.log("mount");
+  }, [])
+
+  // 2. Update
+  // 2번째 인수를 작성하지 않음
+  // 이 컴포넌트가 처음 렌더링될 때 한 번 수행되고, 그 이후에 이 컴포넌트가 렌더링될 때마다 수행
+  useEffect(() => {
+    // 최초에 mount되면서 update 단계에서 이 함수가 수행됨
+    if (!isMount.current) {
+      isMount.current = true;
+      return;
+    }
+    console.log("Update");
+  })
+
+  // 3. Unmount
+
   
   const onClickButton = (value) => {
     // count: 현재 state 값
@@ -29,6 +49,7 @@ function App() {
       </section>
       <section>
         <Viewer count={count}/>
+        { count % 2 === 0 ? <Even /> : null }
       </section>
       <section>
         <Controller onClickButton={onClickButton} />
