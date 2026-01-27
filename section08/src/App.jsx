@@ -67,11 +67,19 @@ function App() {
     )
   }
 
+  const onDelete = (targetId) => {
+    // todos 배열에서 targetId와 일치하는 id를 가진 요소만 삭제하고 새로운 배열 반환
+    setTodos(
+      // targetId와 일치하지 않는 todo만으로 새로운 배열 반환
+      todos.filter((todo) => todo.id !== targetId )
+    )
+  }
+
   return (
     <div className='App'>
       <Header />
       <Editor onCreate={onCreate} />
-      <List todos={todos} onUpdate={onUpdate} />
+      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
     </div>
   )
 }
