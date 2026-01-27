@@ -1,9 +1,8 @@
 import Header from './components/Header'
 import Editor from './components/Editor'
 import List from './components/List'
-import Exam from './components/Exam'
 
-import { useState, useRef } from 'react'
+import { useRef, useReducer } from 'react'
 
 import './App.css'
 
@@ -27,66 +26,63 @@ const mockData = [
     }
   ]
 
+function reducer(state, action) {  
+  switch (action.type) {
+    case "CREATE": 
+      return [action.data, ...state]
+    case "UPDATE":
+      return state.map((item) => 
+        item.id === action.targetId
+        ? {...item, isDone: !item.isDone}
+        : item
+      )
+    case "DELETE":
+      return state.filter(
+        (item) => item.id !== action.targetId
+      )
+    default:
+      return state
+  }
+}
+
 function App() {
-  const [ todos, setTodos ] = useState(mockData);
+  const [ todos, dispatch ] = useReducer(reducer, mockData);
   const idRef = useRef(3);
   const onCreate = (content) => {
-    const newData = {
-      id: idRef.current ++, // 고유 아이템
-      isDone: false,
-      content,
-      date: new Date().getTime(),
-    }
-
-    // todos.push(newData) 
-    // 이렇게 하면 안됨
-    // todos는 state이기 때문에 useTodos와 같은 상태 변화 함수를 호출해야 함
-    // -> 변경된 값을 리액트가 감지하고 리렌더링을 해줌
-
-    setTodos([newData, ...todos]) // 새로운 값을 앞에, 기존의 값을 펼처서 뒤에 배치
+    dispatch({
+      type: "CREATE",
+      data: {
+        id: idRef.current ++,
+        isDone: false,
+        content,
+        date: new Date().getTime(),
+      }
+    })
   }
 
   const onUpdate = (targetId) => {
-    // setTodos(todos.map((todo) => {
-    //   if (todo.id === targetId) {
-    //     return {
-    //       ...todo,
-    //       isDone: !todo.isDone
-    //     }
-    //   } else {
-    //     return todo;
-    //   }
-    // }))
-
-    // 화살표 함수 삭제로 간소화
-    setTodos(
-      todos.map((todo) => 
-        todo.id === targetId 
-          ? { ...todo, isDone: !todo.isDone } 
-          : todo
-      )
-    )
+    dispatch({
+      type: "UPDATE",
+      targetId: targetId
+    })
   }
 
   const onDelete = (targetId) => {
-    // todos 배열에서 targetId와 일치하는 id를 가진 요소만 삭제하고 새로운 배열 반환
-    setTodos(
-      // targetId와 일치하지 않는 todo만으로 새로운 배열 반환
-      todos.filter((todo) => todo.id !== targetId )
-    )
+    dispatch({
+      type: "DELETE",
+      targetId: targetId
+    })
   }
 
   return (
     <div className='App'>
-      <Exam />
-      {/* <Header />
+      <Header />
       <Editor onCreate={onCreate} />
       <List 
         todos={todos} 
         onUpdate={onUpdate} 
         onDelete={onDelete}
       />
-       */}
     </div>
   )
 }
