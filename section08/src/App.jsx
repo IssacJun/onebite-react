@@ -45,11 +45,33 @@ function App() {
     setTodos([newData, ...todos]) // 새로운 값을 앞에, 기존의 값을 펼처서 뒤에 배치
   }
 
+  const onUpdate = (targetId) => {
+    // setTodos(todos.map((todo) => {
+    //   if (todo.id === targetId) {
+    //     return {
+    //       ...todo,
+    //       isDone: !todo.isDone
+    //     }
+    //   } else {
+    //     return todo;
+    //   }
+    // }))
+
+    // 화살표 함수 삭제로 간소화
+    setTodos(
+      todos.map((todo) => 
+        todo.id === targetId 
+          ? { ...todo, isDone: !todo.isDone } 
+          : todo
+      )
+    )
+  }
+
   return (
     <div className='App'>
       <Header />
       <Editor onCreate={onCreate} />
-      <List todos={todos} />
+      <List todos={todos} onUpdate={onUpdate} />
     </div>
   )
 }
