@@ -2,7 +2,7 @@ import Header from './components/Header'
 import Editor from './components/Editor'
 import List from './components/List'
 
-import { useRef, useReducer, useCallback, createContext } from 'react'
+import { useMemo, useRef, useReducer, useCallback, createContext } from 'react'
 
 import './App.css'
 
@@ -45,9 +45,9 @@ function reducer(state, action) {
   }
 }
 
-// 컴포넌트 외부에 선언해야, 안에 있으면 리렌더링 될 때마다 계속 생성됨
-export const TodoContext = createContext();
-// console.log(TodoContext.Provider); // Provider 중요, 
+// Context
+export const TodoStateContext = createContext();
+export const TodoDispatchContext = createContext();
 
 function App() {
   const [ todos, dispatch ] = useReducer(reducer, mockData);
@@ -78,22 +78,19 @@ function App() {
     })
   }, [])
 
+  const memoizedDispatch = useMemo(()=> {
+    return { onCreate, onUpdate, onDelete }
+  }, [])
+
   return (
     <div className='App'>
       <Header />
-      <TodoContext.Provider value={{
-        todos,
-        onCreate,
-        onUpdate,
-        onDelete
-      }}>
-        <Editor />
-        <List 
-          todos={todos} 
-          onUpdate={onUpdate} 
-          onDelete={onDelete}
-        />
-      </TodoContext.Provider>
+      <TodoStateContext.Provider value={todos}>
+        <TodoDispatchContext.Provider value={memoizedDispatch}>
+          <Editor />
+          <List/>
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   )
 }
