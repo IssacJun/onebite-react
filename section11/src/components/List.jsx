@@ -1,8 +1,10 @@
 import TodoItem from './TodoItem';
-import { useState, useMemo } from 'react';
+import { TodoContext } from '../App';
+import { useState, useMemo, useContext } from 'react';
 import './List.css'
 
-const List = ({ todos, onUpdate, onDelete }) => {
+const List = () => {
+    const { todos } = useContext(TodoContext);
     const [ search, setSearch ] = useState("");
     const onChangeSearch = (e) => {
         setSearch(e.target.value);
@@ -77,7 +79,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
             <div className='todos_wrapper'>
                 {/* 검색 결과를 대상으롤 map 메서드 호출 */}
                 {filteredTodos.map((todo) => {                    
-                    return <TodoItem key={todo.id} {...todo} onUpdate={onUpdate} onDelete={onDelete} />
+                    return <TodoItem key={todo.id} {...todo} />
                     // 객체 내 모든 프로퍼티를 각각 개별의 props로 해채해서 던져줌
                     // TodoItem에서 값 접근이 용이함(바로 구조분해 할당을 하면 좋음)
 
