@@ -38,7 +38,8 @@ function App() {
     <Routes>
       <Route path='/' element={<Home />} />
       <Route path='/new' element={<New />} />
-      <Route path='/diary' element={<Diary />} />
+      <Route path='/diary/:id' element={<Diary />} />
+      {/* URL Parameter 명시 */}
       <Route path='/*' element={<Notfound />} />
       {/* *(와일드카드)는 switch문 default처럼 위의 경로에 일치하지 않을 경우 렌더링됨  */}
     </Routes>
