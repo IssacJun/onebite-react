@@ -8,6 +8,9 @@ import Notfound from './pages/Notfound'
 
 import './App.css'
 
+// 이미지 한 번에 처리하기
+import { getEmotionImage } from './util/get-emotion-image'
+
 // 1. /: 모든 일기 조회, home
 // 2. /new: 새로운 일기 작성
 // 3. /diary: 작성된 일기 조회
@@ -21,6 +24,19 @@ function App() {
 
   return ( 
   <>
+    <div>
+      {/* 
+        이미지 파일 불러오기(assets 폴더 안에 있을 때) 
+        이미지 최적화가 이뤄짐
+        빌드 산출물을 보면 Data URI로 이미지 주소가 설정됨, 새로고침하더라도 다시 불러오지 않도록 최적화됨
+        개발자 도구>Network 보면 메모리에 저장되어 다시 안 부름
+      */}
+      <img src={getEmotionImage(1)} />
+      <img src={getEmotionImage(2)} />
+      <img src={getEmotionImage(3)} />
+      <img src={getEmotionImage(4)} />
+      <img src={getEmotionImage(5)} />
+    </div>
     <div>
       <Link to={"/"}>Home</Link>
       <Link to={"/new"}>New</Link>
