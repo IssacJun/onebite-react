@@ -80,9 +80,6 @@ function App() {
 
   return ( 
   <>
-    <button onClick={() => { onCreate(new Date().getTime(), 1, "")}}/>
-    <button onClick={() => { onUpdate(1, new Date().getTime(), 2, "수정")}}/>
-    <button onClick={() => { onDelete(1) }}/>
     <DiaryStateContext.Provider value={data}>
       <DiaryDispatchContext.Provider value={{
         onCreate,
@@ -90,6 +87,7 @@ function App() {
         onDelete
       }}
       >
+        {/* 아래 props로 컴포넌트를 전달할 수 있다. */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/new' element={<New />} />
@@ -97,7 +95,9 @@ function App() {
           <Route path='/edit/:id' element={<Edit />}/>
           {/* URL Parameter 명시 */}
           <Route path='/*' element={<Notfound />} />
-          {/* *(와일드카드)는 switch문 default처럼 위의 경로에 일치하지 않을 경우 렌더링됨  */}
+          {/*
+            위 경로 이외의 경로로 접속할 경우, 아래처럼 *(와일드카드) 작성함
+          */}
         </Routes>
       </DiaryDispatchContext.Provider>
     </DiaryStateContext.Provider>
