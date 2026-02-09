@@ -9,7 +9,10 @@ const DiaryList = ({data}) => {
     const [sortType, setSortType] = useState("latest");
     const onChangeSortType = (e) => {
         setSortType(e.target.value);
+        // sortType이라는 state가 변경되면서 이 컴포넌트가 리렌더링됨
+        // 리렌더링 과정에서 아래 const sortedData = getSortedData(); 실행함
     }
+    // 원본 data는 건드리지 않고 새로운 배열을 복사해서 만듦
     const getSortedData = () => {
         return data.toSorted((a, b)=>{
             if (sortType === "oldest") {
