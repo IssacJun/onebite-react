@@ -6,6 +6,10 @@ import { useState } from 'react'
 function App() {
   const [ count, setCount ] = useState(0);
   const onClickButton = (value) => {
+    // count: 현재 state 값
+    // value: Controller에서 onClickButton 함수가 호출될 때 함께 전달되는 매개변수
+    console.log(`count: ${count}, value: ${value}`);
+    
     setCount(count + value);
   }
 
