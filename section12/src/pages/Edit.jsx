@@ -4,11 +4,13 @@ import Editor from "../components/Editor";
 import { useParams, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { DiaryDispatchContext } from "../App";
+import usePageTitle from "../hooks/usePageTitle";
 import useDiary from "../hooks/useDiary";
 
 const Edit = () => {
     const params = useParams();
     const nav = useNavigate();
+    usePageTitle(`${params.id}번 일기 수정`);
     const { onUpdate, onDelete } = useContext(DiaryDispatchContext);
     const curDiaryItem = useDiary(params.id)
 

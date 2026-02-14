@@ -1,7 +1,5 @@
 import { useReducer, useRef, useEffect, createContext, useState } from 'react'
-import { Routes, Route, Link, useNavigate } from 'react-router-dom'
-// Link: Html에서 a 태그 대체 -> 필요한 컴포넌트만 교체하는 방식으로 페이지 이동
-// 클라이언트 사이드 렌더링 방식(CSR)
+import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Diary from './pages/Diary'
 import New from './pages/New'
@@ -114,11 +112,13 @@ function App() {
     })
   }
 
-  // 
+  // 로딩 중 화면 보여주기
+  // 로딩 완료 후, 아래 코드가 렌더링됨
   if(isLoading) {
     return <div>데이터 로딩 중 ...</div>
   }
 
+  // 로딩이 끝나지 않았을 때, 렌더링되면 안됨
   return ( 
   <>
     <DiaryStateContext.Provider value={data}>
